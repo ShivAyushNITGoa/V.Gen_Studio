@@ -20,6 +20,15 @@ interface VideoCanvasPlayerProps {
   audioRef: React.RefObject<HTMLAudioElement | null>;
   aspectRatio: "16:9" | "9:16" | "1:1";
   setAspectRatio: (ratio: "16:9" | "9:16" | "1:1") => void;
+  hiddenTracks?: number[];
+  exportRef?: React.RefObject<{
+    exportVideo?: () => void;
+    exportStandalonePlayer?: () => void;
+    exportPrintableStoryboard?: () => void;
+    exportSrtSubtitles?: () => void;
+    exportRawWavAudio?: () => void;
+  } | null>;
+  showGridOverlay?: boolean;
 }
 
 export default function VideoCanvasPlayer({
@@ -35,9 +44,25 @@ export default function VideoCanvasPlayer({
   audioRef,
   aspectRatio,
   setAspectRatio,
+  hiddenTracks = [],
+  exportRef,
+  showGridOverlay = false,
 }: VideoCanvasPlayerProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const totalDuration = timeline.length > 0 ? timeline[timeline.length - 1].end : 0;
+  const totalDuration = timeline.reduce((max, node) => Math.max(max, node.end), 0);
+
+  // Register export callbacks with top header
+  useEffect(() => {
+    if (exportRef && exportRef.current !== undefined) {
+      (exportRef as any).current = {
+        exportVideo,
+        exportStandalonePlayer,
+        exportPrintableStoryboard,
+        exportSrtSubtitles,
+        exportRawWavAudio,
+      };
+    }
+  }, [exportRef, timeline, audioBase64, audioUrl, isExporting]);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
@@ -91,11 +116,20 @@ export default function VideoCanvasPlayer({
     });
   }, [timeline]);
 
-  // Find active timeline node
+  // Find active timeline node (highest track/layer takes priority, filtering out hidden tracks)
   useEffect(() => {
-    const active = timeline.find((node) => currentTime >= node.start && currentTime <= node.end) || null;
-    setActiveNode(active);
-  }, [currentTime, timeline]);
+    const overlapping = timeline.filter((node) => {
+      const trackNum = node.track || 1;
+      return currentTime >= node.start && currentTime <= node.end && !hiddenTracks.includes(trackNum);
+    });
+    if (overlapping.length === 0) {
+      setActiveNode(null);
+    } else {
+      // Sort descending by track (fallback to 1 if undefined)
+      overlapping.sort((a, b) => (b.track || 1) - (a.track || 1));
+      setActiveNode(overlapping[0]);
+    }
+  }, [currentTime, timeline, hiddenTracks]);
 
   // Handle Play/Pause
   const togglePlay = () => {
@@ -1206,6 +1240,21 @@ export default function VideoCanvasPlayer({
             id="visualizer-canvas"
           />
 
+          {/* Composition Rules of Thirds Grid Overlay */}
+          {showGridOverlay && (
+            <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 opacity-40 z-10">
+              <div className="border-r border-b border-dashed border-sky-400/55"></div>
+              <div className="border-r border-b border-dashed border-sky-400/55"></div>
+              <div className="border-b border-dashed border-sky-400/55"></div>
+              <div className="border-r border-b border-dashed border-sky-400/55"></div>
+              <div className="border-r border-b border-dashed border-sky-400/55"></div>
+              <div className="border-b border-dashed border-sky-400/55"></div>
+              <div className="border-r border-dashed border-sky-400/55"></div>
+              <div className="border-r border-dashed border-sky-400/55"></div>
+              <div></div>
+            </div>
+          )}
+
           {/* Export Overlay */}
           {isExporting && (
             <div className="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 z-30 transition-all">
@@ -1237,9 +1286,9 @@ export default function VideoCanvasPlayer({
       </div>
 
       {/* Timeline scrubbing & controls */}
-      <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 flex flex-col space-y-2">
+      <div className="bg-slate-950 px-2.5 py-1.5 border-t border-slate-800 flex flex-col space-y-1">
         {/* Scrubbing track bar */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2.5">
           <span className="text-xs font-mono text-sky-400 w-12 text-right">{formatTime(currentTime)}</span>
           <input
             type="range"
@@ -1351,74 +1400,6 @@ export default function VideoCanvasPlayer({
               title="Toggle Fullscreen (F)"
             >
               {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
-            </button>
-          </div>
-        </div>
-
-        {/* PRO EXPORT HUB */}
-        <div className="pt-1">
-          <h4 className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 font-mono mb-1.5">
-            Pro Storyboard Export Hub
-          </h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5">
-            {/* 🎬 Video File */}
-            <button
-              onClick={exportVideo}
-              disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
-              title="Compile the visual storyboard and voice track into a high-fidelity MP4 video file instantly on the server"
-            >
-              <Film className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold text-slate-300">HD Video File</span>
-              <span className="text-[8px] font-mono text-slate-500">H.264 MP4</span>
-            </button>
-
-            {/* 🌐 Interactive HTML Player */}
-            <button
-              onClick={exportStandalonePlayer}
-              disabled={!audioBase64 || timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
-              title="Download a self-contained, offline-playable interactive player with uncompressed quality"
-            >
-              <Globe className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold text-slate-300">HTML5 Player</span>
-              <span className="text-[8px] font-mono text-slate-500">Instant HD</span>
-            </button>
-
-            {/* 📄 Printable Guide / PDF */}
-            <button
-              onClick={exportPrintableStoryboard}
-              disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
-              title="Open a beautiful print-ready guidebook detailing all scenes, narration, and AI prompts"
-            >
-              <Printer className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold text-slate-300">Print Guide / PDF</span>
-              <span className="text-[8px] font-mono text-slate-500">Interactive</span>
-            </button>
-
-            {/* 💬 Captions SRT */}
-            <button
-              onClick={exportSrtSubtitles}
-              disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
-              title="Download a standard SRT subtitle file for Premiere, DaVinci, or CapCut editors"
-            >
-              <MessageSquare className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold text-slate-300">Subtitles (.SRT)</span>
-              <span className="text-[8px] font-mono text-slate-500">Pro Captions</span>
-            </button>
-
-            {/* 🎵 WAV Audio */}
-            <button
-              onClick={exportRawWavAudio}
-              disabled={!audioUrl || isExporting}
-              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group col-span-2 sm:col-span-1 text-center"
-              title="Download the pristine master voice track directly"
-            >
-              <Music className="w-4 h-4 text-pink-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold text-slate-300">Voice Track (.WAV)</span>
-              <span className="text-[8px] font-mono text-slate-500">High Fidelity</span>
             </button>
           </div>
         </div>

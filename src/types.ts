@@ -8,11 +8,13 @@ export interface TimelineNode {
   imageUrl: string; // URL of visual asset to display
   isGenerating?: boolean; // image generation indicator
   isAiGenerated?: boolean; // indicates if the image is an AI generated image
+  isLocked?: boolean;     // block is locked from adjustments
   filter?: "none" | "vintage" | "warm" | "cool" | "mono" | "sepia" | "invert" | "sketch";
   brightness?: number; // 50 to 150 (default 100)
   contrast?: number;   // 50 to 150 (default 100)
   saturation?: number; // 50 to 150 (default 100)
   blur?: number;       // 0 to 10 (default 0)
+  track?: number;      // track number (e.g. 1 for V1, 2 for V2, etc.)
 }
 
 export interface VoiceOption {

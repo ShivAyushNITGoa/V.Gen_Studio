@@ -47,13 +47,13 @@ export default function SegmentInspector({
 
   if (!node) {
     return (
-      <div id="segment-inspector-empty" className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-        <div className="p-4 bg-slate-950 rounded-full mb-4 border border-slate-800">
-          <Sliders className="w-8 h-8 text-slate-600" />
+      <div id="segment-inspector-empty" className="bg-slate-900/50 border border-slate-800/80 rounded-xl p-4 shadow-xl flex flex-col items-center justify-center text-center h-full">
+        <div className="p-2 bg-slate-950 rounded-full mb-2 border border-slate-800">
+          <Sliders className="w-5 h-5 text-slate-600" />
         </div>
-        <h4 className="text-slate-300 font-bold mb-1">No Storyboard Block Selected</h4>
-        <p className="text-slate-500 text-xs max-w-xs leading-relaxed">
-          Click any visual segment on the timeline below to edit captions, customize durations, apply cinematic filters, or regenerate visuals.
+        <h4 className="text-slate-300 font-bold text-xs mb-1">No Storyboard Block Selected</h4>
+        <p className="text-slate-500 text-[10px] max-w-xs leading-relaxed">
+          Click any visual segment on the timeline to edit captions, customize durations, or apply cinematic filters.
         </p>
       </div>
     );
@@ -106,31 +106,31 @@ export default function SegmentInspector({
   };
 
   return (
-    <div id={`segment-inspector-${node.id}`} className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden flex flex-col h-full animate-fade-in">
+    <div id={`segment-inspector-${node.id}`} className="bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden flex flex-col h-full animate-fade-in">
       {/* Inspector Header */}
-      <div className="bg-slate-950 px-5 py-4 border-b border-slate-800 flex items-center justify-between">
-        <div className="flex items-center space-x-2.5">
-          <Sliders className="w-5 h-5 text-indigo-400" />
+      <div className="bg-slate-950 px-3 py-1.5 border-b border-slate-800 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Sliders className="w-4 h-4 text-indigo-400" />
           <div>
-            <h3 className="text-sm font-extrabold text-slate-100 font-mono uppercase tracking-wider">Block Editor</h3>
-            <p className="text-[10px] text-slate-500 font-mono">Editing block: <span className="text-indigo-400 font-bold">{node.id.split("_").pop()}</span></p>
+            <h3 className="text-xs font-bold text-slate-100 font-mono uppercase tracking-wider">Block Editor</h3>
+            <p className="text-[9px] text-slate-500 font-mono">Editing block: <span className="text-indigo-400 font-semibold">{node.id.split("_").pop()}</span></p>
           </div>
         </div>
 
         <button
           onClick={() => onDeleteNode(node.id)}
-          className="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/30 text-red-400 rounded-lg transition-all cursor-pointer"
+          className="p-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/30 text-red-400 rounded-md transition-all cursor-pointer"
           title="Delete storyboard segment"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {/* Selector Tabs */}
-      <div className="grid grid-cols-3 bg-slate-950/40 border-b border-slate-800/80 p-1">
+      <div className="grid grid-cols-3 bg-slate-950/40 border-b border-slate-800/80 p-0.5">
         <button
           onClick={() => setActiveTab("text")}
-          className={`flex items-center justify-center space-x-1.5 py-2.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+          className={`flex items-center justify-center space-x-1 py-1.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
             activeTab === "text"
               ? "bg-slate-800 text-sky-400 shadow-sm"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
@@ -141,7 +141,7 @@ export default function SegmentInspector({
         </button>
         <button
           onClick={() => setActiveTab("visuals")}
-          className={`flex items-center justify-center space-x-1.5 py-2.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+          className={`flex items-center justify-center space-x-1 py-1.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
             activeTab === "visuals"
               ? "bg-slate-800 text-indigo-400 shadow-sm"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
@@ -152,7 +152,7 @@ export default function SegmentInspector({
         </button>
         <button
           onClick={() => setActiveTab("filters")}
-          className={`flex items-center justify-center space-x-1.5 py-2.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+          className={`flex items-center justify-center space-x-1 py-1.5 text-[10px] font-bold rounded-md transition-all cursor-pointer ${
             activeTab === "filters"
               ? "bg-slate-800 text-emerald-400 shadow-sm"
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
@@ -164,13 +164,13 @@ export default function SegmentInspector({
       </div>
 
       {/* Tab Panels */}
-      <div className="p-5 flex-1 overflow-y-auto max-h-[420px] scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent space-y-4">
+      <div className="p-3 flex-1 overflow-y-auto max-h-[420px] scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent space-y-3">
         
         {/* TAB 1: SCRIPT & TIMING */}
         {activeTab === "text" && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-3 animate-fade-in">
             {/* Subtitle Words */}
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <label className="text-xs font-bold text-slate-300 flex items-center space-x-1">
                 <Type className="w-3.5 h-3.5 text-sky-400" />
                 <span>Spoken Text & Subtitle Caption</span>
@@ -180,12 +180,12 @@ export default function SegmentInspector({
                 onChange={(e) => onUpdateNode(node.id, { text: e.target.value })}
                 placeholder="Type the spoken dialogue or subtitle caption for this segment..."
                 rows={3}
-                className="w-full bg-slate-950 border border-slate-800 focus:border-sky-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none transition-all placeholder:text-slate-600 resize-none font-sans leading-relaxed"
+                className="w-full bg-slate-950 border border-slate-800 focus:border-sky-500 rounded-xl px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none transition-all placeholder:text-slate-600 resize-none font-sans leading-relaxed"
               />
             </div>
 
             {/* Block duration adjustment */}
-            <div className="space-y-1.5 bg-slate-950/60 p-4 border border-slate-800/60 rounded-xl">
+            <div className="space-y-1 bg-slate-950/60 p-2.5 border border-slate-800/60 rounded-lg">
               <label className="text-xs font-bold text-slate-300 flex items-center space-x-1">
                 <Clock className="w-3.5 h-3.5 text-sky-400" />
                 <span>Segment Display Duration</span>
@@ -284,46 +284,46 @@ export default function SegmentInspector({
               <button
                 type="button"
                 onClick={handleRefreshStock}
-                className="py-2.5 px-3 bg-slate-950 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs font-mono transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
+                className="py-1.5 px-2.5 bg-slate-950 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-slate-300 rounded-xl text-xs font-mono transition-all flex items-center justify-center space-x-1.5 cursor-pointer"
               >
-                <RefreshCcw className="w-3.5 h-3.5" />
-                <span>Fetch Stock Image</span>
+                <RefreshCcw className="w-3 h-3" />
+                <span>Fetch Stock</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onGenerateAIImage(node.id)}
                 disabled={node.isGenerating || isGeneratingAll}
-                className="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white rounded-xl text-xs font-mono transition-all flex items-center justify-center space-x-1.5 cursor-pointer disabled:cursor-not-allowed"
+                className="py-1.5 px-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white rounded-xl text-xs font-mono transition-all flex items-center justify-center space-x-1.5 cursor-pointer disabled:cursor-not-allowed"
               >
                 {node.isGenerating ? (
                   <>
-                    <span className="animate-spin h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full" />
+                    <span className="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full" />
                     <span>Rendering...</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Generate AI Visual</span>
+                    <Sparkles className="w-3 h-3" />
+                    <span>Generate AI</span>
                   </>
                 )}
               </button>
             </div>
 
-            <div className="border-t border-slate-800/80 my-3"></div>
+            <div className="border-t border-slate-800/80 my-2"></div>
 
             {/* Upload or Custom URL options */}
-            <div className="space-y-3">
-              <div className="bg-slate-950/40 border border-dashed border-slate-800 hover:border-slate-700 p-4 rounded-xl text-center relative transition-colors">
+            <div className="space-y-2">
+              <div className="bg-slate-950/40 border border-dashed border-slate-800 hover:border-slate-700 p-2.5 rounded-lg text-center relative transition-colors">
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                <Upload className="w-6 h-6 text-indigo-400 mx-auto mb-2" />
+                <Upload className="w-4 h-4 text-indigo-400 mx-auto mb-1" />
                 <span className="text-xs text-slate-300 font-bold block mb-0.5">Upload Custom Visual</span>
-                <span className="text-[10px] text-slate-500 font-mono block">Supports JPG, PNG, WebP</span>
+                <span className="text-[9px] text-slate-500 font-mono block">Supports JPG, PNG, WebP</span>
               </div>
 
               <form onSubmit={handleApplyCustomUrl} className="flex space-x-1.5">
@@ -332,12 +332,12 @@ export default function SegmentInspector({
                   value={customUrl}
                   onChange={(e) => setCustomUrl(e.target.value)}
                   placeholder="Paste external image URL directly..."
-                  className="flex-1 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none transition-all placeholder:text-slate-700"
+                  className="flex-1 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none transition-all placeholder:text-slate-700"
                 />
                 <button
                   type="submit"
                   disabled={!customUrl.trim()}
-                  className="px-3 bg-slate-850 hover:bg-slate-700 disabled:bg-slate-950 disabled:text-slate-700 border border-slate-800 text-slate-200 font-bold text-xs rounded-xl transition-all"
+                  className="px-2.5 py-1.5 bg-slate-850 hover:bg-slate-700 disabled:bg-slate-950 disabled:text-slate-700 border border-slate-800 text-slate-200 font-bold text-xs rounded-xl transition-all"
                 >
                   Apply
                 </button>
@@ -348,7 +348,7 @@ export default function SegmentInspector({
 
         {/* TAB 3: EFFECTS & FILTERS (Advanced Visual Adjustments) */}
         {activeTab === "filters" && (
-          <div className="space-y-5 animate-fade-in">
+          <div className="space-y-3 animate-fade-in">
             {/* Color filter presets */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
@@ -369,7 +369,7 @@ export default function SegmentInspector({
                     <button
                       key={p.id}
                       onClick={() => onUpdateNode(node.id, { filter: p.id as any })}
-                      className={`p-2.5 text-left rounded-xl border text-xs transition-all flex flex-col justify-between cursor-pointer ${
+                      className={`py-1.5 px-2 text-left rounded-xl border text-xs transition-all flex flex-col justify-between cursor-pointer ${
                         isApplied
                           ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-bold"
                           : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-750"
@@ -386,10 +386,10 @@ export default function SegmentInspector({
               </div>
             </div>
 
-            <div className="border-t border-slate-800/80 my-3"></div>
+            <div className="border-t border-slate-800/80 my-2"></div>
 
             {/* Custom Sliders: Brightness, Contrast, Saturation, Blur */}
-            <div className="space-y-4 bg-slate-950/50 p-4 border border-slate-800/40 rounded-xl">
+            <div className="space-y-3 bg-slate-950/50 p-2.5 border border-slate-800/40 rounded-lg">
               <div className="flex items-center justify-between">
                 <label className="text-[11px] font-bold text-slate-300 font-mono uppercase flex items-center space-x-1">
                   <span>Manual Adjustments</span>
