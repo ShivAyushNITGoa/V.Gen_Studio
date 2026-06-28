@@ -1,0 +1,6 @@
+{
+  "name": "V.Gen Studio",
+  "description": "A professional AI-driven video generation studio that humanizes text transcripts, builds dynamic storyboard timelines, renders cinematic AI visuals, and compiles synchronized high-definition videos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
