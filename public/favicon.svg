@@ -1,43 +1,38 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Silver metallic blade gradient matching the polished PNG -->
     <linearGradient id="shutter-metal" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#ffffff" />
-      <stop offset="35%" stopColor="#e2e8f0" />
-      <stop offset="70%" stopColor="#94a3b8" />
-      <stop offset="100%" stopColor="#475569" />
-    </linearGradient>
-    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#818cf8" />
-      <stop offset="100%" stopColor="#4f46e5" />
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#e2e8f0" />
+      <stop offset="60%" stop-color="#94a3b8" />
+      <stop offset="85%" stop-color="#475569" />
+      <stop offset="100%" stop-color="#1e293b" />
     </linearGradient>
   </defs>
-  <!-- Mirror the background shutter elements to match the main app logo -->
-  <g transform="scale(-1, 1) translate(-100, 0)">
-    <!-- High-contrast vibrant glowing border and background -->
-    <circle cx="50" cy="50" r="48" fill="url(#bg-gradient)" stroke="#ffffff" strokeWidth="2.5" />
-    <g stroke="#312e81" strokeWidth="1.5" strokeLinejoin="round">
-      <path id="blade" d="M 98,50 A 48 48 0 0 1 83.94,83.94 L 50,72 A 22 22 0 0 0 65.56,65.56 Z" fill="url(#shutter-metal)" />
-      <use href="#blade" transform="rotate(45 50 50)" />
-      <use href="#blade" transform="rotate(90 50 50)" />
-      <use href="#blade" transform="rotate(135 50 50)" />
-      <use href="#blade" transform="rotate(180 50 50)" />
-      <use href="#blade" transform="rotate(225 50 50)" />
-      <use href="#blade" transform="rotate(270 50 50)" />
-      <use href="#blade" transform="rotate(315 50 50)" />
-    </g>
-    <!-- Central black aperture lens -->
-    <circle cx="50" cy="50" r="22" fill="#09090b" stroke="#ffffff" strokeWidth="1.5" />
+  
+  <!-- Outer transparent boundary containing the shutter blades -->
+  <g stroke="#09090b" stroke-width="1.2" stroke-linejoin="round">
+    <path id="blade" d="M 98,50 A 48 48 0 0 1 83.94,83.94 L 50,72 A 22 22 0 0 0 65.56,65.56 Z" fill="url(#shutter-metal)" />
+    <use href="#blade" transform="rotate(45 50 50)" />
+    <use href="#blade" transform="rotate(90 50 50)" />
+    <use href="#blade" transform="rotate(135 50 50)" />
+    <use href="#blade" transform="rotate(180 50 50)" />
+    <use href="#blade" transform="rotate(225 50 50)" />
+    <use href="#blade" transform="rotate(270 50 50)" />
+    <use href="#blade" transform="rotate(315 50 50)" />
   </g>
-  <!-- Keep the letter 'V' unmirrored for legibility -->
+  
+  <!-- Central pitch-black aperture lens hole -->
+  <circle cx="50" cy="50" r="22.5" fill="#000000" stroke="#09090b" stroke-width="1" />
+  
+  <!-- Clean, perfectly centered high-contrast white letter 'V' -->
   <text
     x="50"
     y="58"
-    fontFamily="system-ui, -apple-system, sans-serif"
-    fontWeight="900"
-    fontSize="25"
-    textAnchor="middle"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-weight="900"
+    font-size="24"
+    text-anchor="middle"
     fill="#ffffff"
-  >
-    V
-  </text>
+  >V</text>
 </svg>

@@ -778,40 +778,12 @@ export default function App() {
           {/* Logo Brand */}
           <div className="flex items-center space-x-2.5 shrink-0">
             <div className="flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 100 100" className="w-8 h-8 animate-fade-in -scale-x-100" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="shutter-metal" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#f8fafc" />
-                    <stop offset="35%" stopColor="#cbd5e1" />
-                    <stop offset="70%" stopColor="#64748b" />
-                    <stop offset="100%" stopColor="#334155" />
-                  </linearGradient>
-                </defs>
-                <circle cx="50" cy="50" r="48" fill="#1e293b" />
-                <g stroke="#0f172a" strokeWidth="1.2" strokeLinejoin="round">
-                  <path id="blade" d="M 98,50 A 48 48 0 0 1 83.94,83.94 L 50,72 A 22 22 0 0 0 65.56,65.56 Z" fill="url(#shutter-metal)" />
-                  <use href="#blade" transform="rotate(45 50 50)" />
-                  <use href="#blade" transform="rotate(90 50 50)" />
-                  <use href="#blade" transform="rotate(135 50 50)" />
-                  <use href="#blade" transform="rotate(180 50 50)" />
-                  <use href="#blade" transform="rotate(225 50 50)" />
-                  <use href="#blade" transform="rotate(270 50 50)" />
-                  <use href="#blade" transform="rotate(315 50 50)" />
-                </g>
-                <circle cx="50" cy="50" r="21.5" fill="#000000" stroke="#0f172a" strokeWidth="0.8" />
-                <text
-                  x="50"
-                  y="57"
-                  fontFamily="system-ui, -apple-system, sans-serif"
-                  fontWeight="900"
-                  fontSize="21"
-                  textAnchor="middle"
-                  fill="#ffffff"
-                  letterSpacing="-0.5"
-                >
-                  V
-                </text>
-              </svg>
+              <img
+                src="/favicon.svg"
+                className="w-8 h-8 animate-fade-in -scale-x-100 object-contain"
+                alt="V.Gen Studio Logo"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div>
               <h1 className="text-sm font-bold text-white font-sans leading-tight">
