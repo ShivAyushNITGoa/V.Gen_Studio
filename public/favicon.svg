@@ -10,20 +10,22 @@
     </linearGradient>
   </defs>
   
-  <!-- Outer transparent boundary containing the shutter blades -->
-  <g stroke="#09090b" stroke-width="1.2" stroke-linejoin="round">
-    <path id="blade" d="M 98,50 A 48 48 0 0 1 83.94,83.94 L 50,72 A 22 22 0 0 0 65.56,65.56 Z" fill="url(#shutter-metal)" />
-    <use href="#blade" transform="rotate(45 50 50)" />
-    <use href="#blade" transform="rotate(90 50 50)" />
-    <use href="#blade" transform="rotate(135 50 50)" />
-    <use href="#blade" transform="rotate(180 50 50)" />
-    <use href="#blade" transform="rotate(225 50 50)" />
-    <use href="#blade" transform="rotate(270 50 50)" />
-    <use href="#blade" transform="rotate(315 50 50)" />
+  <!-- Outer transparent boundary containing the shutter blades (mirrored horizontally) -->
+  <g transform="scale(-1, 1) translate(-100, 0)">
+    <g stroke="#09090b" stroke-width="1.2" stroke-linejoin="round">
+      <path id="blade" d="M 98,50 A 48 48 0 0 1 83.94,83.94 L 50,72 A 22 22 0 0 0 65.56,65.56 Z" fill="url(#shutter-metal)" />
+      <use href="#blade" transform="rotate(45 50 50)" />
+      <use href="#blade" transform="rotate(90 50 50)" />
+      <use href="#blade" transform="rotate(135 50 50)" />
+      <use href="#blade" transform="rotate(180 50 50)" />
+      <use href="#blade" transform="rotate(225 50 50)" />
+      <use href="#blade" transform="rotate(270 50 50)" />
+      <use href="#blade" transform="rotate(315 50 50)" />
+    </g>
+    
+    <!-- Central pitch-black aperture lens hole -->
+    <circle cx="50" cy="50" r="22.5" fill="#000000" stroke="#09090b" stroke-width="1" />
   </g>
-  
-  <!-- Central pitch-black aperture lens hole -->
-  <circle cx="50" cy="50" r="22.5" fill="#000000" stroke="#09090b" stroke-width="1" />
   
   <!-- Clean, perfectly centered high-contrast white letter 'V' -->
   <text

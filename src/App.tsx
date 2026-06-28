@@ -780,7 +780,7 @@ export default function App() {
             <div className="flex items-center justify-center shrink-0">
               <img
                 src="/favicon.svg"
-                className="w-8 h-8 animate-fade-in -scale-x-100 object-contain"
+                className="w-8 h-8 animate-fade-in object-contain"
                 alt="V.Gen Studio Logo"
                 referrerPolicy="no-referrer"
               />
