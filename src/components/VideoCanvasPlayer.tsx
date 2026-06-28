@@ -1140,10 +1140,9 @@ export default function VideoCanvasPlayer({
   };  return (
     <div id="video-canvas-container" className="flex flex-col bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl shadow-black/60 w-full h-full max-w-[850px] mx-auto">
       {/* Header Info with Aspect Ratio Switcher */}
-      <div className="bg-slate-950/80 px-5 py-3 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-slate-950/80 px-3 py-1.5 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex items-center space-x-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-sky-400 animate-pulse"></span>
-          <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">Canvas Visualizer</h3>
+          <h3 className="text-xs font-semibold text-slate-200">Video Canvas</h3>
         </div>
 
         {/* Aspect Ratio Switcher Tabs */}
@@ -1187,12 +1186,6 @@ export default function VideoCanvasPlayer({
             <Crop className="w-3.5 h-3.5" />
             <span>1:1</span>
           </button>
-        </div>
-
-        <div className="text-[10px] text-slate-400 font-mono">
-          Resolution: <span className="text-sky-400 font-bold">
-            {aspectRatio === "16:9" ? "1280x720" : (aspectRatio === "9:16" ? "720x1280" : "720x720")}
-          </span>
         </div>
       </div>
 
@@ -1241,49 +1234,10 @@ export default function VideoCanvasPlayer({
             </div>
           )}
         </div>
-
-        {/* dB Master audio meter */}
-        {!isFullscreen && (
-          <div className="w-12 bg-slate-950/90 border-l border-slate-900 flex flex-col justify-between items-center py-3 px-1 shrink-0 select-none font-mono">
-            <span className="text-[7px] font-bold text-slate-500 uppercase tracking-wider scale-90 mb-1 text-center w-full">MTR L/R</span>
-            
-            <div className="flex-1 w-full flex justify-center space-x-1 py-1">
-              {/* Left Channel */}
-              <div className="w-2.5 h-full bg-slate-900/60 rounded flex flex-col justify-end p-0.5 space-y-[2px]">
-                {Array.from({ length: 14 }).map((_, idx) => {
-                  const levelVal = 14 - idx;
-                  const isActive = dbLevels.left >= levelVal;
-                  let colorClass = "bg-slate-800";
-                  if (isActive) {
-                    colorClass = levelVal > 11 ? "bg-red-500 animate-pulse" : levelVal > 8 ? "bg-amber-400" : "bg-emerald-500";
-                  }
-                  return <div key={`l-${idx}`} className={`w-full h-[3px] rounded-[1px] transition-all duration-75 ${colorClass}`} />;
-                })}
-              </div>
-
-              {/* Right Channel */}
-              <div className="w-2.5 h-full bg-slate-900/60 rounded flex flex-col justify-end p-0.5 space-y-[2px]">
-                {Array.from({ length: 14 }).map((_, idx) => {
-                  const levelVal = 14 - idx;
-                  const isActive = dbLevels.right >= levelVal;
-                  let colorClass = "bg-slate-800";
-                  if (isActive) {
-                    colorClass = levelVal > 11 ? "bg-red-500 animate-pulse" : levelVal > 8 ? "bg-amber-400" : "bg-emerald-500";
-                  }
-                  return <div key={`r-${idx}`} className={`w-full h-[3px] rounded-[1px] transition-all duration-75 ${colorClass}`} />;
-                })}
-              </div>
-            </div>
-
-            <span className="text-[7px] font-bold text-slate-400 font-mono mt-1 text-center scale-90 truncate w-full">
-              {isPlaying && !isMuted ? `-${(15 - Math.max(dbLevels.left, dbLevels.right)).toFixed(0)}dB` : "OFF"}
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Timeline scrubbing & controls */}
-      <div className="bg-slate-950 px-6 py-4 border-t border-slate-800 flex flex-col space-y-4">
+      <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 flex flex-col space-y-2">
         {/* Scrubbing track bar */}
         <div className="flex items-center space-x-4">
           <span className="text-xs font-mono text-sky-400 w-12 text-right">{formatTime(currentTime)}</span>
@@ -1300,63 +1254,63 @@ export default function VideoCanvasPlayer({
           />
           <span className="text-xs font-mono text-slate-400 w-12">{formatTime(totalDuration)}</span>
         </div>        {/* Master Control Panel */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-3 border-b border-slate-900/40">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 pb-1.5 border-b border-slate-900/40">
           {/* Playback action controls */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               id="btn-play-pause"
               onClick={togglePlay}
               disabled={!audioUrl || isExporting}
-              className={`p-3 rounded-xl flex items-center justify-center font-bold text-sm transition-all shadow-md ${
+              className={`p-1.5 px-3 rounded-lg flex items-center justify-center font-bold text-xs transition-all shadow-md ${
                 isPlaying
                   ? "bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-amber-500/10"
                   : "bg-sky-500 hover:bg-sky-600 text-slate-950 shadow-sky-500/10"
               } disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer`}
               title={isPlaying ? "Pause (Space)" : "Play (Space)"}
             >
-              {isPlaying ? <Pause className="w-5 h-5 fill-slate-950" /> : <Play className="w-5 h-5 fill-slate-950" />}
+              {isPlaying ? <Pause className="w-4 h-4 fill-slate-950" /> : <Play className="w-4 h-4 fill-slate-950" />}
             </button>
             <button
               id="btn-stop"
               onClick={stopPlayback}
               disabled={!audioUrl || isExporting}
-              className="p-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all border border-slate-700 disabled:opacity-30 cursor-pointer"
+              className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-all border border-slate-700 disabled:opacity-30 cursor-pointer"
               title="Stop"
             >
-              <Square className="w-5 h-5 fill-slate-300" />
+              <Square className="w-4 h-4 fill-slate-300" />
             </button>
 
             {/* Skip 10s buttons */}
-            <div className="flex items-center bg-slate-900/85 border border-slate-800 rounded-xl p-1 space-x-1">
+            <div className="flex items-center bg-slate-900/85 border border-slate-800 rounded-lg p-0.5 space-x-0.5">
               <button
                 type="button"
                 onClick={() => skipTimeBy(-10)}
                 disabled={!audioUrl || isExporting}
-                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer disabled:opacity-30"
+                className="p-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition-colors cursor-pointer disabled:opacity-30"
                 title="Rewind 10 seconds"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-3.5 h-3.5" />
               </button>
-              <span className="text-[10px] font-mono text-slate-500 select-none">10s</span>
+              <span className="text-[9px] font-mono text-slate-500 select-none px-0.5">10s</span>
               <button
                 type="button"
                 onClick={() => skipTimeBy(10)}
                 disabled={!audioUrl || isExporting}
-                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer disabled:opacity-30"
+                className="p-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded transition-colors cursor-pointer disabled:opacity-30"
                 title="Forward 10 seconds"
               >
-                <RotateCw className="w-4 h-4" />
+                <RotateCw className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Volume */}
-            <div className="flex items-center bg-slate-900/85 border border-slate-800 rounded-xl px-3 py-2 space-x-2">
+            <div className="flex items-center bg-slate-900/85 border border-slate-800 rounded-lg px-2 py-1 space-x-1.5">
               <button
                 onClick={toggleMute}
                 className="text-slate-400 hover:text-white transition-colors cursor-pointer"
                 title={isMuted ? "Unmute (M)" : "Mute (M)"}
               >
-                {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4" />}
+                {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-400" /> : <Volume2 className="w-3.5 h-3.5" />}
               </button>
               <input
                 type="range"
@@ -1365,21 +1319,21 @@ export default function VideoCanvasPlayer({
                 step={0.05}
                 value={isMuted ? 0 : volume}
                 onChange={handleVolumeChange}
-                className="w-16 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-slate-400 focus:outline-none"
+                className="w-12 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-slate-400 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Right controls: Playback rate & Fullscreen */}
-          <div className="flex items-center space-x-3 self-end md:self-auto">
+          <div className="flex items-center space-x-2 self-end md:self-auto">
             {/* Playback Rate Selector */}
-            <div className="flex items-center space-x-1.5 bg-slate-900/85 border border-slate-800 rounded-xl px-2.5 py-1.5">
-              <span className="text-[10px] font-bold font-mono text-slate-500 uppercase tracking-wider font-semibold">Speed</span>
+            <div className="flex items-center space-x-1 bg-slate-900/85 border border-slate-800 rounded-lg px-2 py-1">
+              <span className="text-[9px] font-bold font-mono text-slate-500 uppercase tracking-wider">Speed</span>
               <select
                 value={playbackRate}
                 onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
                 disabled={!audioUrl || isExporting}
-                className="bg-transparent text-xs font-mono font-bold text-sky-400 focus:outline-none cursor-pointer"
+                className="bg-transparent text-[10px] font-mono font-bold text-sky-400 focus:outline-none cursor-pointer"
               >
                 <option value="0.5" className="bg-slate-950 text-slate-200">0.5x</option>
                 <option value="1.0" className="bg-slate-950 text-slate-200">1.0x</option>
@@ -1393,29 +1347,29 @@ export default function VideoCanvasPlayer({
             <button
               type="button"
               onClick={handleFullscreen}
-              className="p-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-xl transition-all cursor-pointer"
+              className="p-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg transition-all cursor-pointer"
               title="Toggle Fullscreen (F)"
             >
-              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+              {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
             </button>
           </div>
         </div>
 
         {/* PRO EXPORT HUB */}
-        <div className="pt-2">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400 font-mono mb-3">
+        <div className="pt-1">
+          <h4 className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 font-mono mb-1.5">
             Pro Storyboard Export Hub
           </h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5">
             {/* 🎬 Video File */}
             <button
               onClick={exportVideo}
               disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-3 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-xl transition-all gap-1.5 cursor-pointer disabled:cursor-not-allowed group text-center"
+              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
               title="Compile the visual storyboard and voice track into a high-fidelity MP4 video file instantly on the server"
             >
-              <Film className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold text-slate-300">HD Video File</span>
+              <Film className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-bold text-slate-300">HD Video File</span>
               <span className="text-[8px] font-mono text-slate-500">H.264 MP4</span>
             </button>
 
@@ -1423,11 +1377,11 @@ export default function VideoCanvasPlayer({
             <button
               onClick={exportStandalonePlayer}
               disabled={!audioBase64 || timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-3 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-xl transition-all gap-1.5 cursor-pointer disabled:cursor-not-allowed group text-center"
+              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
               title="Download a self-contained, offline-playable interactive player with uncompressed quality"
             >
-              <Globe className="w-5 h-5 text-sky-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold text-slate-300">HTML5 Player</span>
+              <Globe className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-bold text-slate-300">HTML5 Player</span>
               <span className="text-[8px] font-mono text-slate-500">Instant HD</span>
             </button>
 
@@ -1435,11 +1389,11 @@ export default function VideoCanvasPlayer({
             <button
               onClick={exportPrintableStoryboard}
               disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-3 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-xl transition-all gap-1.5 cursor-pointer disabled:cursor-not-allowed group text-center"
+              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
               title="Open a beautiful print-ready guidebook detailing all scenes, narration, and AI prompts"
             >
-              <Printer className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold text-slate-300">Print Guide / PDF</span>
+              <Printer className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-bold text-slate-300">Print Guide / PDF</span>
               <span className="text-[8px] font-mono text-slate-500">Interactive</span>
             </button>
 
@@ -1447,11 +1401,11 @@ export default function VideoCanvasPlayer({
             <button
               onClick={exportSrtSubtitles}
               disabled={timeline.length === 0 || isExporting}
-              className="flex flex-col items-center justify-center p-3 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-xl transition-all gap-1.5 cursor-pointer disabled:cursor-not-allowed group text-center"
+              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group text-center"
               title="Download a standard SRT subtitle file for Premiere, DaVinci, or CapCut editors"
             >
-              <MessageSquare className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold text-slate-300">Subtitles (.SRT)</span>
+              <MessageSquare className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-bold text-slate-300">Subtitles (.SRT)</span>
               <span className="text-[8px] font-mono text-slate-500">Pro Captions</span>
             </button>
 
@@ -1459,11 +1413,11 @@ export default function VideoCanvasPlayer({
             <button
               onClick={exportRawWavAudio}
               disabled={!audioUrl || isExporting}
-              className="flex flex-col items-center justify-center p-3 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-xl transition-all gap-1.5 cursor-pointer disabled:cursor-not-allowed group col-span-2 sm:col-span-1 text-center"
+              className="flex flex-col items-center justify-center p-1.5 py-2 bg-slate-900/60 hover:bg-slate-800 disabled:bg-slate-950/40 disabled:text-slate-700 border border-slate-800/80 rounded-lg transition-all gap-1 cursor-pointer disabled:cursor-not-allowed group col-span-2 sm:col-span-1 text-center"
               title="Download the pristine master voice track directly"
             >
-              <Music className="w-5 h-5 text-pink-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[10px] font-bold text-slate-300">Voice Track (.WAV)</span>
+              <Music className="w-4 h-4 text-pink-400 group-hover:scale-110 transition-transform" />
+              <span className="text-[9px] font-bold text-slate-300">Voice Track (.WAV)</span>
               <span className="text-[8px] font-mono text-slate-500">High Fidelity</span>
             </button>
           </div>

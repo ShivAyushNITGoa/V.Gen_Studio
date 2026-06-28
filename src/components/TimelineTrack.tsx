@@ -71,9 +71,8 @@ export default function TimelineTrack({
       {/* Track Header */}
       <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
         <div className="flex items-center space-x-2">
-          <div className="flex space-x-1 items-center px-2 py-1 bg-slate-950 rounded-md border border-slate-800">
-            <span className="w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
-            <span className="text-[10px] font-extrabold text-slate-400 font-mono tracking-wider uppercase">Multi-Track Edit Desk</span>
+          <div className="flex space-x-1.5 items-center px-2 py-1 bg-slate-950 rounded-md border border-slate-800">
+            <span className="text-[10px] font-bold text-slate-400 font-sans tracking-wide">Clips</span>
           </div>
           <span className="text-xs text-slate-500 font-mono hidden sm:inline">
             Total Playback: <span className="text-sky-400 font-bold">{totalDuration.toFixed(1)}s</span>
@@ -97,18 +96,16 @@ export default function TimelineTrack({
           
           {/* Video track head */}
           <div className="h-28 border-b border-slate-800/60 px-2 flex flex-col justify-center bg-slate-950/40">
-            <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider">TRACK V1</span>
-            <span className="text-[10px] font-extrabold text-sky-400 font-mono flex items-center space-x-1">
-              <ImageIcon className="w-3 h-3" />
+            <span className="text-[10px] font-bold text-sky-400 font-mono flex items-center space-x-1">
+              <ImageIcon className="w-3.5 h-3.5" />
               <span>Visuals</span>
             </span>
           </div>
 
           {/* Subtitle track head */}
           <div className="h-16 px-2 flex flex-col justify-center bg-slate-950/20">
-            <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider">TRACK T1</span>
-            <span className="text-[10px] font-extrabold text-violet-400 font-mono flex items-center space-x-1">
-              <Scissors className="w-3 h-3" />
+            <span className="text-[10px] font-bold text-violet-400 font-mono flex items-center space-x-1">
+              <Scissors className="w-3.5 h-3.5" />
               <span>Captions</span>
             </span>
           </div>
